@@ -1,0 +1,25 @@
+.hero-section{
+    position: relative;
+}
+
+.hero-image{
+    width: 100%;
+    height: 440px;
+    object-fit: cover;
+}
+
+.hero-text{
+    position: absolute;
+    bottom: 50px;
+    left: 60px;
+    color: white;
+}
+
+.hero-text h1{
+    font-size: 42px;
+    font-weight: bold;
+}
+
+.hero-text p{
+    font-size: 18px;
+}
