@@ -38,18 +38,18 @@ function Content() {
                 </div>
             </div>
 
-<div className="container">
-    <div className="row">
-        <div className="col-6">
-            <img src={Rectangle5} alt="" />
-            <h6>✍️ Article</h6>
-            <h4>What if famous brands had regular fonts? Meet RegulaBrands!</h4>
-            <p className="text-muted">I’ve worked in UX for the better part of a decade. From now on, I plan to rei…</p>
-        </div>
+            <div className="container">
+                <div className="row">
+                    <div className="col-6">
+                        <img src={Rectangle5} alt="" />
+                        <h6>✍️ Article</h6>
+                        <h4>What if famous brands had regular fonts? Meet RegulaBrands!</h4>
+                        <p className="text-muted">I’ve worked in UX for the better part of a decade. From now on, I plan to rei…</p>
+                    </div>
 
-    </div>
+                </div>
 
-</div>
+            </div>
 
         </>
     );
