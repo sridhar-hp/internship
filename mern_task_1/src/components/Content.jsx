@@ -85,7 +85,7 @@ function Content() {
 
             {/* MAIN SECTION */}
 
-<div className="container custom-container main-content mt-4">
+            <div className="container custom-container main-content mt-4">
                 <div className="row">
 
                     {/* LEFT SIDE */}
