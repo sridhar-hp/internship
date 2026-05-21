@@ -1,7 +1,7 @@
 import express from "express";
 import dotenv from "dotenv";
 import cors from "cors";
-
+import projectRoutes from "./routes/projectRoutes.js";
 import connectDB from "./config/db.js";
 
 dotenv.config();
@@ -13,7 +13,7 @@ connectDB();
 app.use(cors());
 
 app.use(express.json());
-
+app.use("/api/project", projectRoutes);
 app.get("/", (req, res) => {
   res.send("Sandbox Server Running");
 });

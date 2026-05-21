@@ -1,6 +1,7 @@
+import React from 'react';
 import 'bootstrap/dist/css/bootstrap.min.css';
-import { useState } from 'react';
-
+import { useEffect,useState } from 'react';
+import axios from 'axios';
 import Sidebar from './components/Sidebar';
 import CodeEditor from './components/CodeEditor';
 import Preview from './components/Preview';
@@ -26,6 +27,65 @@ function App() {
   ]);
 
   const [selectedFile, setSelectedFile] = useState(files[0]);
+  useEffect(() => {
+
+  const loadProject = async () => {
+
+    try {
+
+      const response = await axios.get(
+        "http://localhost:5000/api/project/load"
+      );
+
+      if (
+        response.data.success &&
+        response.data.project
+      ) {
+
+        setFiles(response.data.project.files);
+
+        setSelectedFile(
+          response.data.project.files[0]
+        );
+
+      }
+
+    } catch (error) {
+
+      console.log(error);
+
+    }
+
+  };
+
+  loadProject();
+
+}, []);
+
+useEffect(() => {
+
+  const timeout = setTimeout(async () => {
+
+    try {
+
+      await axios.post(
+        "http://localhost:5000/api/project/save",
+        { files }
+      );
+
+      console.log("Project Saved");
+
+    } catch (error) {
+
+      console.log(error);
+
+    }
+
+  }, 1000);
+
+  return () => clearTimeout(timeout);
+
+}, [files]);
 
   return (
     <div className="d-flex vh-100">

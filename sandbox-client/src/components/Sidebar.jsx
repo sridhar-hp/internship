@@ -1,3 +1,5 @@
+import React from 'react';
+
 function Sidebar({
     files,
     selectedFile,
@@ -26,7 +28,7 @@ function Sidebar({
         const newFile = {
             name: fileName,
             language,
-            content: ""
+            content: "/* Start coding... */"
         };
 
         setFiles([...files, newFile]);

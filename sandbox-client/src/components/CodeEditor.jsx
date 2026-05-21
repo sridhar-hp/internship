@@ -1,3 +1,4 @@
+import React from 'react';
 import Editor from "@monaco-editor/react";
 
 function CodeEditor({ selectedFile, files, setFiles }) {
