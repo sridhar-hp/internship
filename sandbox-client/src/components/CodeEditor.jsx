@@ -1,7 +1,17 @@
-function CodeEditor() {
+import Editor from "@monaco-editor/react";
+
+function CodeEditor({ selectedFile }) {
+
   return (
-    <div className="p-3">
-      <h4>Editor</h4>
+    <div style={{ height: "100vh" }}>
+
+      <Editor
+        height="100%"
+        language={selectedFile.language}
+        value={selectedFile.content}
+        theme="vs-dark"
+      />
+
     </div>
   );
 }
