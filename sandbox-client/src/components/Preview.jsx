@@ -1,8 +1,58 @@
-function Preview() {
+import { useEffect, useRef } from "react";
+
+function Preview({ files }) {
+
+  const iframeRef = useRef();
+
+  useEffect(() => {
+
+    const htmlFile = files.find(
+      (file) => file.name === "index.html"
+    );
+
+    const cssFile = files.find(
+      (file) => file.name === "style.css"
+    );
+
+    const jsFile = files.find(
+      (file) => file.name === "script.js"
+    );
+
+    const html = htmlFile ? htmlFile.content : "";
+    const css = cssFile ? cssFile.content : "";
+    const js = jsFile ? jsFile.content : "";
+
+    const previewContent = `
+      <html>
+        <head>
+          <style>${css}</style>
+        </head>
+
+        <body>
+          ${html}
+
+          <script>
+            ${js}
+          <\/script>
+        </body>
+      </html>
+    `;
+
+    iframeRef.current.srcdoc = previewContent;
+
+  }, [files]);
+
   return (
-    <div className="p-3">
-      <h4>Preview</h4>
-    </div>
+    <iframe
+      ref={iframeRef}
+      sandbox="allow-scripts"
+      title="preview"
+      style={{
+        width: "100%",
+        height: "100%",
+        border: "none"
+      }}
+    />
   );
 }
 

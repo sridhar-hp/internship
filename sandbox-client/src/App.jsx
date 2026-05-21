@@ -35,15 +35,17 @@ function App() {
           files={files}
           selectedFile={selectedFile}
           setSelectedFile={setSelectedFile}
+          setFiles={setFiles}
         />
       </div>
 
       <div className="border-end" style={{ width: "50%" }}>
-        <CodeEditor selectedFile={selectedFile} />
+        <CodeEditor selectedFile={selectedFile} files={files}
+          setFiles={setFiles} />
       </div>
 
       <div style={{ width: "30%" }}>
-        <Preview />
+        <Preview files={files} />
       </div>
 
     </div>
