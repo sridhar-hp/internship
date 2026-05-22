@@ -10,6 +10,9 @@ function Sidebar({
     const handleNewFile = () => {
 
         const fileName = prompt("Enter file name");
+        const folderName = prompt(
+            "Enter folder name (optional)"
+        );
 
         if (!fileName) return;
 
@@ -28,6 +31,7 @@ function Sidebar({
         const newFile = {
             name: fileName,
             language,
+            folder: folderName || "root",
             content:
                 language === "html"
                     ? "<h1>New File</h1>"
@@ -40,6 +44,20 @@ function Sidebar({
 
         setSelectedFile(newFile);
     };
+
+    const groupedFiles = files.reduce((acc, file) => {
+
+        const folder = file.folder || "root";
+
+        if (!acc[folder]) {
+            acc[folder] = [];
+        }
+
+        acc[folder].push(file);
+
+        return acc;
+
+    }, {});
 
     return (
         <div className="sidebar p-3">
@@ -60,114 +78,126 @@ function Sidebar({
             </div>
 
             {
-                files.map((file) => (
-                    <div
-                        key={file.name}
-                        className={`file-item p-2 mb-2 rounded d-flex justify-content-between align-items-center ${selectedFile.name === file.name
-                            ? "active-file"
-                            : ""
-                            }`}
-                        style={{ cursor: "pointer" }}
-                        onClick={() => setSelectedFile(file)}
-                    >
+                Object.entries(groupedFiles).map(
+                    ([folderName, folderFiles]) => (
+                        <div key={folderName} className="mb-3">
 
-                        <div className="d-flex align-items-center justify-content-between w-100">
-
-                            <span>
-
-                                {
-                                    file.language === "html"
-                                        ? "🌐 "
-                                        : file.language === "css"
-                                            ? "🎨 "
-                                            : "⚡ "
-                                }
-
-                                {file.name}
-
-                            </span>
-
-                            <div className="d-flex align-items-center gap-2">
-
-                                <button
-                                    className="icon-btn"
-                                    onClick={(e) => {
-
-                                        e.stopPropagation();
-
-                                        const newName = prompt(
-                                            "Enter new file name",
-                                            file.name
-                                        );
-
-                                        if (!newName) return;
-
-                                        const updatedFiles = files.map((f) => {
-
-                                            if (f.name === file.name) {
-
-                                                return {
-                                                    ...f,
-                                                    name: newName
-                                                };
-
-                                            }
-
-                                            return f;
-
-                                        });
-
-                                        setFiles(updatedFiles);
-
-                                        if (selectedFile.name === file.name) {
-
-                                            const updatedSelectedFile = updatedFiles.find(
-                                                (f) => f.name === newName
-                                            );
-
-                                            setSelectedFile(updatedSelectedFile);
-
-                                        }
-
-                                    }}
-                                >
-                                    ✏️
-                                </button>
-
-                                <button
-                                    className="icon-btn"
-                                    onClick={(e) => {
-
-                                        e.stopPropagation();
-
-                                        if (files.length === 1) {
-                                            alert("At least one file required");
-                                            return;
-                                        }
-
-                                        const updatedFiles = files.filter(
-                                            (f) => f.name !== file.name
-                                        );
-
-                                        setFiles(updatedFiles);
-
-                                        if (
-                                            selectedFile.name === file.name &&
-                                            updatedFiles.length > 0
-                                        ) {
-                                            setSelectedFile(updatedFiles[0]);
-                                        }
-
-                                    }}
-                                >
-                                    🗑️
-                                </button>
-
+                            <div className="fw-bold mb-2">
+                                📁 {folderName}
                             </div>
-                        </div>
 
-                    </div>
-                ))
+                            {
+                                folderFiles.map((file) => (
+                                    <div
+                                        key={`${file.folder}-${file.name}`} className={`file-item p-2 mb-2 rounded d-flex justify-content-between align-items-center ${selectedFile.name === file.name
+                                            ? "active-file"
+                                            : ""
+                                            }`}
+                                        style={{ cursor: "pointer" }}
+                                        onClick={() => setSelectedFile(file)}
+                                    >
+
+                                        <div className="d-flex align-items-center justify-content-between w-100">
+
+                                            <span>
+
+                                                {
+                                                    file.language === "html"
+                                                        ? "🌐 "
+                                                        : file.language === "css"
+                                                            ? "🎨 "
+                                                            : "⚡ "
+                                                }
+
+                                                {file.name}
+
+                                            </span>
+
+                                            <div className="d-flex align-items-center gap-2">
+
+                                                <button
+                                                    className="icon-btn"
+                                                    onClick={(e) => {
+
+                                                        e.stopPropagation();
+
+                                                        const newName = prompt(
+                                                            "Enter new file name",
+                                                            file.name
+                                                        );
+
+                                                        if (!newName) return;
+
+                                                        const updatedFiles = files.map((f) => {
+
+                                                            if (f.name === file.name) {
+
+                                                                return {
+                                                                    ...f,
+                                                                    name: newName
+                                                                };
+
+                                                            }
+
+                                                            return f;
+
+                                                        });
+
+                                                        setFiles(updatedFiles);
+
+                                                        if (selectedFile.name === file.name) {
+
+                                                            const updatedSelectedFile = updatedFiles.find(
+                                                                (f) => f.name === newName
+                                                            );
+
+                                                            setSelectedFile(updatedSelectedFile);
+
+                                                        }
+
+                                                    }}
+                                                >
+                                                    ✏️
+                                                </button>
+
+                                                <button
+                                                    className="icon-btn"
+                                                    onClick={(e) => {
+
+                                                        e.stopPropagation();
+
+                                                        if (files.length === 1) {
+                                                            alert("At least one file required");
+                                                            return;
+                                                        }
+
+                                                        const updatedFiles = files.filter(
+                                                            (f) => f.name !== file.name
+                                                        );
+
+                                                        setFiles(updatedFiles);
+
+                                                        if (
+                                                            selectedFile.name === file.name &&
+                                                            updatedFiles.length > 0
+                                                        ) {
+                                                            setSelectedFile(updatedFiles[0]);
+                                                        }
+
+                                                    }}
+                                                >
+                                                    🗑️
+                                                </button>
+
+                                            </div>
+                                        </div>
+
+                                    </div>
+                                ))
+                            }
+
+                        </div>
+                    ))
             }
 
         </div>

@@ -1,6 +1,7 @@
 import mongoose from "mongoose";
 
 const fileSchema = new mongoose.Schema({
+
   name: {
     type: String,
     required: true
@@ -11,10 +12,16 @@ const fileSchema = new mongoose.Schema({
     required: true
   },
 
+  folder: {
+    type: String,
+    default: "root"
+  },
+
   content: {
     type: String,
     required: true
   }
+
 });
 
 const projectSchema = new mongoose.Schema({
