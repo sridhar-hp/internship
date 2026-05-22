@@ -90,7 +90,7 @@ useEffect(() => {
   return (
     <div className="d-flex vh-100">
 
-      <div className="border-end" style={{ width: "20%" }}>
+      <div className="border-end" style={{ width: "18%" }}>
         <Sidebar
           files={files}
           selectedFile={selectedFile}
@@ -99,7 +99,7 @@ useEffect(() => {
         />
       </div>
 
-      <div className="border-end" style={{ width: "50%" }}>
+      <div className="border-end" style={{ width: "52%" }}>
         <CodeEditor selectedFile={selectedFile} files={files}
           setFiles={setFiles} />
       </div>

@@ -44,17 +44,25 @@ function Preview({ files }) {
   }, [files]);
 
   return (
+  <div className="preview-container">
+
+    <div className="preview-header">
+      🌐 Live Preview
+    </div>
+
     <iframe
       ref={iframeRef}
       sandbox="allow-scripts"
       title="preview"
       style={{
         width: "100%",
-        height: "100%",
+        height: "95%",
         border: "none"
       }}
     />
-  );
+
+  </div>
+);
 }
 
 export default Preview;

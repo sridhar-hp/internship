@@ -37,11 +37,13 @@ function Sidebar({
     };
 
     return (
-        <div className="p-3">
+        <div className="sidebar p-3">
 
-            <div className="d-flex justify-content-between align-items-center mb-4">
+            <div className="sidebar-header d-flex justify-content-between align-items-center mb-4">
 
-                <h4>Files</h4>
+                <h5 className="m-0 fw-bold">
+                    📁 Explorer
+                </h5>
 
                 <button
                     className="btn btn-sm btn-dark"
@@ -51,22 +53,84 @@ function Sidebar({
                 </button>
 
             </div>
+
             {
                 files.map((file) => (
                     <div
                         key={file.name}
-                        className={`p-2 mb-2 border rounded d-flex justify-content-between align-items-center ${selectedFile.name === file.name
-                                ? "bg-dark text-white"
-                                : ""
+                        className={`file-item p-2 mb-2 rounded d-flex justify-content-between align-items-center ${selectedFile.name === file.name
+                            ? "active-file"
+                            : ""
                             }`}
                         style={{ cursor: "pointer" }}
                         onClick={() => setSelectedFile(file)}
                     >
 
-                        <span>{file.name}</span>
+                       <div className="d-flex align-items-center justify-content-between w-100">
+
+    <span>
+
+        {
+            file.language === "html"
+                ? "🌐 "
+                : file.language === "css"
+                    ? "🎨 "
+                    : "⚡ "
+        }
+
+        {file.name}
+
+    </span>
+
+    <div className="d-flex align-items-center gap-2">
+
+        <button
+            className="icon-btn"
+                            onClick={(e) => {
+
+                                e.stopPropagation();
+
+                                const newName = prompt(
+                                    "Enter new file name",
+                                    file.name
+                                );
+
+                                if (!newName) return;
+
+                                const updatedFiles = files.map((f) => {
+
+                                    if (f.name === file.name) {
+
+                                        return {
+                                            ...f,
+                                            name: newName
+                                        };
+
+                                    }
+
+                                    return f;
+
+                                });
+
+                                setFiles(updatedFiles);
+
+                                if (selectedFile.name === file.name) {
+
+                                    const updatedSelectedFile = updatedFiles.find(
+                                        (f) => f.name === newName
+                                    );
+
+                                    setSelectedFile(updatedSelectedFile);
+
+                                }
+
+                            }}
+                        >
+                            ✏️
+                        </button>
 
                         <button
-                            className="btn btn-sm btn-danger"
+                            className="icon-btn"
                             onClick={(e) => {
 
                                 e.stopPropagation();
@@ -86,10 +150,13 @@ function Sidebar({
 
                             }}
                         >
-                            X
+                            🗑️
                         </button>
 
                     </div>
+                    </div>
+
+</div>
                 ))
             }
 
