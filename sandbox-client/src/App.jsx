@@ -1,6 +1,6 @@
 import React from 'react';
 import 'bootstrap/dist/css/bootstrap.min.css';
-import { useEffect,useState } from 'react';
+import { useEffect, useState } from 'react';
 import axios from 'axios';
 import Sidebar from './components/Sidebar';
 import CodeEditor from './components/CodeEditor';
@@ -25,67 +25,70 @@ function App() {
       content: "console.log('Hello');"
     }
   ]);
-
+  const [runFiles, setRunFiles] = useState(files);
   const [selectedFile, setSelectedFile] = useState(files[0]);
+  const [activePreviewFile, setActivePreviewFile] =
+    useState("index.html");
+
   useEffect(() => {
 
-  const loadProject = async () => {
+    const loadProject = async () => {
 
-    try {
+      try {
 
-      const response = await axios.get(
-        "http://localhost:5000/api/project/load"
-      );
-
-      if (
-        response.data.success &&
-        response.data.project
-      ) {
-
-        setFiles(response.data.project.files);
-
-        setSelectedFile(
-          response.data.project.files[0]
+        const response = await axios.get(
+          "http://localhost:5000/api/project/load"
         );
+
+        if (
+          response.data.success &&
+          response.data.project
+        ) {
+
+          setFiles(response.data.project.files);
+          setRunFiles(response.data.project.files);
+          setSelectedFile(
+            response.data.project.files[0]
+          );
+
+        }
+
+      } catch (error) {
+
+        console.log(error);
 
       }
 
-    } catch (error) {
+    };
 
-      console.log(error);
+    loadProject();
 
-    }
+  }, []);
 
-  };
+  useEffect(() => {
 
-  loadProject();
+    const timeout = setTimeout(async () => {
 
-}, []);
+      try {
 
-useEffect(() => {
+        await axios.post(
+          "http://localhost:5000/api/project/save",
+          { files }
+        );
 
-  const timeout = setTimeout(async () => {
+        console.log("Project Saved");
 
-    try {
+      } catch (error) {
 
-      await axios.post(
-        "http://localhost:5000/api/project/save",
-        { files }
-      );
+        console.log(error);
 
-      console.log("Project Saved");
+      }
 
-    } catch (error) {
+    }, 1000);
 
-      console.log(error);
+    return () => clearTimeout(timeout);
 
-    }
-
-  }, 1000);
-
-  return () => clearTimeout(timeout);
-
-}, [files]);
+  }, [files]);
 
   return (
     <div className="d-flex vh-100">
@@ -99,14 +102,51 @@ useEffect(() => {
         />
       </div>
 
-      <div className="border-end" style={{ width: "52%" }}>
-        <CodeEditor selectedFile={selectedFile} files={files}
-          setFiles={setFiles} />
+      <div
+        className="border-end d-flex flex-column"
+        style={{ width: "52%" }}
+      >
+
+        <div
+          className="d-flex justify-content-end p-2 border-bottom"
+          style={{ background: "#1e1e1e" }}
+        >
+
+          <button
+            className="btn btn-success btn-sm"
+            onClick={() => {
+
+              setRunFiles([...files]);
+
+              if (selectedFile.language === "html") {
+
+                setActivePreviewFile(selectedFile.name);
+
+              }
+
+            }}          >
+            ▶ Run
+          </button>
+
+        </div>
+
+        <div style={{ flex: 1 }}>
+
+          <CodeEditor
+            selectedFile={selectedFile}
+            files={files}
+            setFiles={setFiles}
+          />
+
+        </div>
+
       </div>
 
       <div style={{ width: "30%" }}>
-        <Preview files={files} />
-      </div>
+        <Preview
+          files={runFiles}
+          activePreviewFile={activePreviewFile}
+        />      </div>
 
     </div>
   );

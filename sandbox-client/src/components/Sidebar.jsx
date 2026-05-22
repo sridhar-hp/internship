@@ -28,7 +28,12 @@ function Sidebar({
         const newFile = {
             name: fileName,
             language,
-            content: "/* Start coding... */"
+            content:
+                language === "html"
+                    ? "<h1>New File</h1>"
+                    : language === "css"
+                        ? "body {\n\n}"
+                        : "console.log('Hello');"
         };
 
         setFiles([...files, newFile]);
@@ -66,97 +71,102 @@ function Sidebar({
                         onClick={() => setSelectedFile(file)}
                     >
 
-                       <div className="d-flex align-items-center justify-content-between w-100">
+                        <div className="d-flex align-items-center justify-content-between w-100">
 
-    <span>
+                            <span>
 
-        {
-            file.language === "html"
-                ? "🌐 "
-                : file.language === "css"
-                    ? "🎨 "
-                    : "⚡ "
-        }
-
-        {file.name}
-
-    </span>
-
-    <div className="d-flex align-items-center gap-2">
-
-        <button
-            className="icon-btn"
-                            onClick={(e) => {
-
-                                e.stopPropagation();
-
-                                const newName = prompt(
-                                    "Enter new file name",
-                                    file.name
-                                );
-
-                                if (!newName) return;
-
-                                const updatedFiles = files.map((f) => {
-
-                                    if (f.name === file.name) {
-
-                                        return {
-                                            ...f,
-                                            name: newName
-                                        };
-
-                                    }
-
-                                    return f;
-
-                                });
-
-                                setFiles(updatedFiles);
-
-                                if (selectedFile.name === file.name) {
-
-                                    const updatedSelectedFile = updatedFiles.find(
-                                        (f) => f.name === newName
-                                    );
-
-                                    setSelectedFile(updatedSelectedFile);
-
+                                {
+                                    file.language === "html"
+                                        ? "🌐 "
+                                        : file.language === "css"
+                                            ? "🎨 "
+                                            : "⚡ "
                                 }
 
-                            }}
-                        >
-                            ✏️
-                        </button>
+                                {file.name}
 
-                        <button
-                            className="icon-btn"
-                            onClick={(e) => {
+                            </span>
 
-                                e.stopPropagation();
+                            <div className="d-flex align-items-center gap-2">
 
-                                const updatedFiles = files.filter(
-                                    (f) => f.name !== file.name
-                                );
+                                <button
+                                    className="icon-btn"
+                                    onClick={(e) => {
 
-                                setFiles(updatedFiles);
+                                        e.stopPropagation();
 
-                                if (
-                                    selectedFile.name === file.name &&
-                                    updatedFiles.length > 0
-                                ) {
-                                    setSelectedFile(updatedFiles[0]);
-                                }
+                                        const newName = prompt(
+                                            "Enter new file name",
+                                            file.name
+                                        );
 
-                            }}
-                        >
-                            🗑️
-                        </button>
+                                        if (!newName) return;
+
+                                        const updatedFiles = files.map((f) => {
+
+                                            if (f.name === file.name) {
+
+                                                return {
+                                                    ...f,
+                                                    name: newName
+                                                };
+
+                                            }
+
+                                            return f;
+
+                                        });
+
+                                        setFiles(updatedFiles);
+
+                                        if (selectedFile.name === file.name) {
+
+                                            const updatedSelectedFile = updatedFiles.find(
+                                                (f) => f.name === newName
+                                            );
+
+                                            setSelectedFile(updatedSelectedFile);
+
+                                        }
+
+                                    }}
+                                >
+                                    ✏️
+                                </button>
+
+                                <button
+                                    className="icon-btn"
+                                    onClick={(e) => {
+
+                                        e.stopPropagation();
+
+                                        if (files.length === 1) {
+                                            alert("At least one file required");
+                                            return;
+                                        }
+
+                                        const updatedFiles = files.filter(
+                                            (f) => f.name !== file.name
+                                        );
+
+                                        setFiles(updatedFiles);
+
+                                        if (
+                                            selectedFile.name === file.name &&
+                                            updatedFiles.length > 0
+                                        ) {
+                                            setSelectedFile(updatedFiles[0]);
+                                        }
+
+                                    }}
+                                >
+                                    🗑️
+                                </button>
+
+                            </div>
+                        </div>
 
                     </div>
-                    </div>
-
-</div>
                 ))
             }
 

@@ -1,14 +1,17 @@
 import React from 'react';
 import { useEffect, useRef } from "react";
 
-function Preview({ files }) {
+function Preview({
+  files,
+  activePreviewFile
+}) {
 
   const iframeRef = useRef();
 
   useEffect(() => {
 
     const htmlFile = files.find(
-      (file) => file.name === "index.html"
+      (file) => file.name === activePreviewFile
     );
 
     const cssFile = files.find(
@@ -41,28 +44,28 @@ function Preview({ files }) {
 
     iframeRef.current.srcdoc = previewContent;
 
-  }, [files]);
+  }, [files, activePreviewFile]);
 
   return (
-  <div className="preview-container">
+    <div className="preview-container">
 
-    <div className="preview-header">
-      🌐 Live Preview
+      <div className="preview-header">
+        🌐 Live Preview
+      </div>
+
+      <iframe
+        ref={iframeRef}
+        sandbox="allow-scripts"
+        title="preview"
+        style={{
+          width: "100%",
+          height: "95%",
+          border: "none"
+        }}
+      />
+
     </div>
-
-    <iframe
-      ref={iframeRef}
-      sandbox="allow-scripts"
-      title="preview"
-      style={{
-        width: "100%",
-        height: "95%",
-        border: "none"
-      }}
-    />
-
-  </div>
-);
+  );
 }
 
 export default Preview;
