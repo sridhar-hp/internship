@@ -89,7 +89,8 @@ function Sidebar({
                             {
                                 folderFiles.map((file) => (
                                     <div
-                                        key={`${file.folder}-${file.name}`} className={`file-item p-2 mb-2 rounded d-flex justify-content-between align-items-center ${selectedFile.name === file.name
+                                        key={`${file.folder}-${file.name}`} className={`file-item p-2 mb-2 rounded d-flex justify-content-between align-items-center ${selectedFile.name === file.name &&
+                                            selectedFile.folder === file.folder
                                             ? "active-file"
                                             : ""
                                             }`}
@@ -130,7 +131,10 @@ function Sidebar({
 
                                                         const updatedFiles = files.map((f) => {
 
-                                                            if (f.name === file.name) {
+                                                            if (
+                                                                f.name === file.name &&
+                                                                f.folder === file.folder
+                                                            ) {
 
                                                                 return {
                                                                     ...f,
@@ -145,7 +149,10 @@ function Sidebar({
 
                                                         setFiles(updatedFiles);
 
-                                                        if (selectedFile.name === file.name) {
+                                                        if (
+                                                            selectedFile.name === file.name &&
+                                                            selectedFile.folder === file.folder
+                                                        ) {
 
                                                             const updatedSelectedFile = updatedFiles.find(
                                                                 (f) => f.name === newName
@@ -172,13 +179,18 @@ function Sidebar({
                                                         }
 
                                                         const updatedFiles = files.filter(
-                                                            (f) => f.name !== file.name
+                                                            (f) =>
+                                                                !(
+                                                                    f.name === file.name &&
+                                                                    f.folder === file.folder
+                                                                )
                                                         );
 
                                                         setFiles(updatedFiles);
 
                                                         if (
                                                             selectedFile.name === file.name &&
+                                                            selectedFile.folder === file.folder &&
                                                             updatedFiles.length > 0
                                                         ) {
                                                             setSelectedFile(updatedFiles[0]);

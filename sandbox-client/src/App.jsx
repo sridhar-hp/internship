@@ -37,7 +37,7 @@ function App() {
       try {
 
         const response = await axios.get(
-          "http://localhost:5000/api/project/load"
+          "https://internship-bzsh.onrender.com/api/project/load"
         );
 
         if (
@@ -72,7 +72,7 @@ function App() {
       try {
 
         await axios.post(
-          "http://localhost:5000/api/project/save",
+          "https://internship-bzsh.onrender.com/api/project/save",
           { files }
         );
 
